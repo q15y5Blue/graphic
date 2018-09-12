@@ -30,4 +30,8 @@ public class Type {
     }
 
     public Type() { }
+
+    public static void main(String[] args) {
+        System.out.println("xxxxx");
+    }
 }
