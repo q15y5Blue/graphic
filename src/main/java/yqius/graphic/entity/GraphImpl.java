@@ -1,7 +1,7 @@
-package yqius.dataDeal.entity;
+package yqius.graphic.entity;
 
 
-import yqius.dataDeal.entity.inter.Graph;
+import yqius.graphic.entity.inter.Graph;
 
 import java.util.ArrayList;
 

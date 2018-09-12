@@ -1,7 +1,6 @@
-package yqius.dataDeal.entity;
+package yqius.graphic.entity;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 public class Vertex {

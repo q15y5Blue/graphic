@@ -1,4 +1,4 @@
-package yqius.dataDeal.entity;
+package yqius.graphic.entity;
 
 public class Edges<T> {
     private String name;// 项目名称

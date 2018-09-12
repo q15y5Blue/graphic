@@ -1,4 +1,4 @@
-package yqius.dataDeal.entity;
+package yqius.graphic.entity;
 
 import java.util.ArrayList;
 

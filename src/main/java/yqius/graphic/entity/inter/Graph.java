@@ -1,11 +1,10 @@
-package yqius.dataDeal.entity.inter;
+package yqius.graphic.entity.inter;
 
 
-import yqius.dataDeal.entity.Edges;
-import yqius.dataDeal.entity.Vertex;
+import yqius.graphic.entity.Edges;
+import yqius.graphic.entity.Vertex;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public interface Graph {
     void createGraph(ArrayList<Vertex> vertices);
