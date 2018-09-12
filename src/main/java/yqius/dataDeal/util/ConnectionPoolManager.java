@@ -4,9 +4,9 @@ package yqius.dataDeal.util;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Collection;
 
+import yqius.dataDeal.entity.Type;
 import yqius.dataDeal.util.inter.selectInterface;
 
 public class ConnectionPoolManager implements selectInterface{
@@ -33,14 +33,15 @@ public class ConnectionPoolManager implements selectInterface{
             conn = pool.getConnection();
             prs = conn.prepareStatement(sql);
             rs = prs.executeQuery();
-            int number = rs.getMetaData().getColumnCount();
-            if(rs.next()){
-                for(int i= 1; i<=number;i++){
-                    System.out.println(rs.getMetaData().getColumnName(i));
-//                    jo.put(Comm.nTrim(rs.getMetaData().getColumnName(i)).toLowerCase(),Comm.nTrim(rs.getString(i)));
-                }
+            int rowNumber = 1;
+            while(rs.next()){
+                Type type = new Type();
+                type.setTypeName(StrUtil.trimStr(rs.getString("xtype")));
+                type.setContent(StrUtil.trimStr(rs.getString("b_name")));
+                type.setCount(Integer.parseInt(StrUtil.trimStr(rs.getString("count"))));
+                System.out.println(type);
             }
-        }catch (SQLException e){
+        }catch (Exception e){
             e.printStackTrace();
         }finally {
             pool.closePreparedStatement(prs);
@@ -56,11 +57,10 @@ public class ConnectionPoolManager implements selectInterface{
     }
 
     public static void main(String[] args) {
-//        ConnectionPoolManager cpm = new ConnectionPoolManager();
-//        cpm.selectObeject("select xtype,b_name,count(*) from invoice2018 A, YB_BNAMES B " +
-//                " where A.xtype is not null AND A.req_no=B.SERIAL_NO " +
-//                " group by xtype,b_name " +
-//                " order by xtype,b_name;");
-        System.out.println("ssss");
+        ConnectionPoolManager cpm = new ConnectionPoolManager();
+        cpm.selectObeject("select xtype,b_name,count(*) as count from invoice2018 A, YB_BNAMES B " +
+                " where A.xtype is not null AND A.req_no=B.SERIAL_NO " +
+                " and rownum  <100 "+
+                " group by xtype,b_name order by xtype,b_name");
     }
 }

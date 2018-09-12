@@ -28,7 +28,7 @@ public class ConnectionPool {
 
      private static DataSource getDatasource() {
         PoolProperties p = new PoolProperties();
-        p.setUrl("192.168.15.94:1521/orcll");
+        p.setUrl("jdbc:oracle:thin:@192.168.15.94:1521/orcll");
         p.setDriverClassName("oracle.jdbc.driver.OracleDriver");
         p.setUsername("fdall");
         p.setPassword("zhao");
@@ -89,5 +89,6 @@ public class ConnectionPool {
         }catch (SQLException e){
             e.printStackTrace();
         }
-    }
+}
+
 }
