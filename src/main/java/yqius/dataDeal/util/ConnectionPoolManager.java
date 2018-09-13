@@ -4,15 +4,15 @@ package yqius.dataDeal.util;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Collection;
 
+import yqius.dataDeal.entity.Type;
 import yqius.dataDeal.util.inter.selectInterface;
 
 public class ConnectionPoolManager implements selectInterface{
 
 
-    /**
+    /** m
      * 虚假的接口
      * 为了配合现有系统
      * @param str
@@ -35,12 +35,13 @@ public class ConnectionPoolManager implements selectInterface{
             rs = prs.executeQuery();
             int rowNumber = 1;
             while(rs.next()){
-                rowNumber ++;
-
-                if (rowNumber>=100)
-                    break;
+                Type type = new Type();
+                type.setTypeName(StrUtil.trimStr(rs.getString("xtype")));
+                type.setTypeName(StrUtil.trimStr(rs.getString("b_name")));
+                type.setCount(Integer.parseInt(StrUtil.trimStr(rs.getString("count"))));
+                rs.getString("count");
             }
-        }catch (SQLException e){
+        }catch (Exception e){
             e.printStackTrace();
         }finally {
             pool.closePreparedStatement(prs);
@@ -57,10 +58,9 @@ public class ConnectionPoolManager implements selectInterface{
 
     public static void main(String[] args) {
         ConnectionPoolManager cpm = new ConnectionPoolManager();
-        cpm.selectObeject("select xtype,b_name,count(*) from invoice2018 A, YB_BNAMES B " +
+        cpm.selectObeject("select xtype,b_name,count(*) as count from invoice2018 A, YB_BNAMES B " +
                 " where A.xtype is not null AND A.req_no=B.SERIAL_NO " +
-                " group by xtype,b_name " +
-                " order by xtype,b_name");
-//        System.out.println("ssss");
+                " and rownum  <100 "+
+                " group by xtype,b_name order by xtype,b_name");
     }
 }
