@@ -12,7 +12,7 @@ import yqius.dataDeal.util.inter.selectInterface;
 public class ConnectionPoolManager implements selectInterface{
 
 
-    /**
+    /** m
      * 虚假的接口
      * 为了配合现有系统
      * @param str
@@ -37,9 +37,9 @@ public class ConnectionPoolManager implements selectInterface{
             while(rs.next()){
                 Type type = new Type();
                 type.setTypeName(StrUtil.trimStr(rs.getString("xtype")));
-                type.setContent(StrUtil.trimStr(rs.getString("b_name")));
+                type.setTypeName(StrUtil.trimStr(rs.getString("b_name")));
                 type.setCount(Integer.parseInt(StrUtil.trimStr(rs.getString("count"))));
-                System.out.println(type);
+                rs.getString("count");
             }
         }catch (Exception e){
             e.printStackTrace();

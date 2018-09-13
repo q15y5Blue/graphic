@@ -4,7 +4,7 @@ import yqius.dataDeal.util.StrUtil;
 
 import java.util.List;
 
-public class Cate {
+public class Type {
     public String typeName;
     public String content;
     public Integer count;
@@ -43,7 +43,7 @@ public class Cate {
         this.count = count;
     }
 
-    public Cate() { }
+    public Type() { }
 
     @Override
     public String toString() {
