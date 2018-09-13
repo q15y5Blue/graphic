@@ -1,18 +1,17 @@
 package yqius.dataDeal.entity;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Type {
     public String typeName;
-    public String content;
-    public Integer count;
-    public ArrayList<String> list;
+    public List<String> list;
 
-    public ArrayList<String> getList() {
+    public List<String> getList() {
         return list;
     }
 
-    public void setList(ArrayList<String> list) {
+    public void setList(List<String> list) {
         this.list = list;
     }
 
@@ -24,25 +23,27 @@ public class Type {
         this.typeName = typeName;
     }
 
-    public String getContent() {
-        return content;
+    @Override
+    public String toString() {
+        return "Type{" +
+                "typeName='" + typeName + '\'' +
+                ", list=" + list +
+                '}';
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Type type = (Type) o;
+        return Objects.equals(typeName, type.typeName);
     }
 
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
+    @Override
+    public int hashCode() {
+        return Objects.hash(typeName);
     }
 
     public Type() { }
 
-    public static void main(String[] args) {
-        System.out.println("xxxxx");
-    }
 }

@@ -5,7 +5,7 @@ import yqius.dataDeal.util.BeanUtil;
 import java.util.Collection;
 import java.util.List;
 
-public interface selectInterface {
+public interface SelectInterface {
     public Object selectObeject(String sql);
-    public Collection selectArray(String sql);
+    public Collection selectArray(String sql,Class clazz);
 }

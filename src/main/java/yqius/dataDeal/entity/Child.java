@@ -1,27 +1,35 @@
 package yqius.dataDeal.entity;
 
+import yqius.dataDeal.util.StrUtil;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Child {
-    String CateName;
-    String childName;
-    Integer count;
+    private String xtype;
+    private String b_name;
+    private Integer count;
+    private List b_nameList = new ArrayList();
 
-    public String getCateName() {
-        return CateName;
+    public Child() {
     }
 
-    public void setCateName(String cateName) {
-        CateName = cateName;
+    public String getXtype() {
+        return xtype;
     }
 
-    public String getChildName() {
-        return childName;
+    public void setXtype(String xtype) {
+        this.xtype = xtype;
     }
 
-    public void setChildName(String childName) {
-        this.childName = childName;
+    public String getB_name() {
+        return b_name;
+    }
+
+    public void setB_name(String b_name) {
+        setB_nameList(StrUtil.arrayToListSplit(b_name,","));
+        this.b_name = b_name;
     }
 
     public Integer getCount() {
@@ -32,20 +40,20 @@ public class Child {
         this.count = count;
     }
 
-    public Child() {
+    public List getB_nameList() {
+        return b_nameList;
+    }
+
+    public void setB_nameList(List b_nameList) {
+        this.b_nameList = b_nameList;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Child child = (Child) o;
-        return Objects.equals(CateName, child.CateName) &&
-                Objects.equals(childName, child.childName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(CateName, childName);
+    public String toString() {
+        return "Child{" +
+                "xtype='" + xtype + '\'' +
+                ", b_name='" + b_name + '\'' +
+                ", count=" + count +
+                '}';
     }
 }

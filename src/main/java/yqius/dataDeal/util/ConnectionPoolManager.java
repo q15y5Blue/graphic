@@ -4,12 +4,12 @@ package yqius.dataDeal.util;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Collection;
+import java.util.*;
 
-import yqius.dataDeal.entity.Type;
-import yqius.dataDeal.util.inter.selectInterface;
+import org.apache.commons.beanutils.BeanUtils;
+import yqius.dataDeal.util.inter.SelectInterface;
 
-public class ConnectionPoolManager implements selectInterface{
+public class ConnectionPoolManager implements SelectInterface{
 
 
     /** m
@@ -24,8 +24,13 @@ public class ConnectionPoolManager implements selectInterface{
 
     @Override
     public Object selectObeject(String sql) {
-        System.out.println("select A object");
-        ConnectionPool pool = ConnectionPoolManager.getPool("CMServer");
+        return null;
+    }
+
+    @Override
+    public List selectArray(String sql, Class clazz) {
+//        System.out.println("select A object");
+        ConnectionPool pool = ConnectionPoolManager.getPool("CMServer");//
         PreparedStatement prs =null;
         ResultSet rs = null;
         Connection conn = null;
@@ -34,13 +39,18 @@ public class ConnectionPoolManager implements selectInterface{
             prs = conn.prepareStatement(sql);
             rs = prs.executeQuery();
             int rowNumber = 1;
+            List<Object> list = new ArrayList<Object>();
+            int col = rs.getMetaData().getColumnCount();
             while(rs.next()){
-                Type type = new Type();
-                type.setTypeName(StrUtil.trimStr(rs.getString("xtype")));
-                type.setTypeName(StrUtil.trimStr(rs.getString("b_name")));
-                type.setCount(Integer.parseInt(StrUtil.trimStr(rs.getString("count"))));
-                rs.getString("count");
+                Object obj = clazz.getDeclaredConstructor().newInstance();
+                for(int i=1;i<=col;i++){
+                    BeanUtils.setProperty(obj,rs.getMetaData().getColumnName(i).toLowerCase(),StrUtil.trimStr(rs.getString(i)));
+                }
+                list.add(obj);
+                rowNumber ++;//test
+                if(rowNumber >100) break;//test
             }
+            return list;
         }catch (Exception e){
             e.printStackTrace();
         }finally {
@@ -51,16 +61,5 @@ public class ConnectionPoolManager implements selectInterface{
         return null;
     }
 
-    @Override
-    public Collection selectArray(String sql) {
-        return null;
-    }
 
-    public static void main(String[] args) {
-        ConnectionPoolManager cpm = new ConnectionPoolManager();
-        cpm.selectObeject("select xtype,b_name,count(*) as count from invoice2018 A, YB_BNAMES B " +
-                " where A.xtype is not null AND A.req_no=B.SERIAL_NO " +
-                " and rownum  <100 "+
-                " group by xtype,b_name order by xtype,b_name");
-    }
 }

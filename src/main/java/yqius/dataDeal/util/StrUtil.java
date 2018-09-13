@@ -1,5 +1,6 @@
 package yqius.dataDeal.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class StrUtil {
      * @return
      */
     public static List arrayToListSplit(String arrs,String regex){
-        List<String> list = Arrays.asList(arrs.split(regex));
+        List<String> list = Arrays.asList(arrs.split(regex));//问题在这里
         return list;
     }
 }
