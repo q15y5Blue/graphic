@@ -33,12 +33,12 @@ public class ConnectionPoolManager implements selectInterface{
             conn = pool.getConnection();
             prs = conn.prepareStatement(sql);
             rs = prs.executeQuery();
-            int number = rs.getMetaData().getColumnCount();
-            if(rs.next()){
-                for(int i= 1; i<=number;i++){
-                    System.out.println(rs.getMetaData().getColumnName(i));
-//                    jo.put(Comm.nTrim(rs.getMetaData().getColumnName(i)).toLowerCase(),Comm.nTrim(rs.getString(i)));
-                }
+            int rowNumber = 1;
+            while(rs.next()){
+                rowNumber ++;
+
+                if (rowNumber>=100)
+                    break;
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -56,11 +56,11 @@ public class ConnectionPoolManager implements selectInterface{
     }
 
     public static void main(String[] args) {
-//        ConnectionPoolManager cpm = new ConnectionPoolManager();
-//        cpm.selectObeject("select xtype,b_name,count(*) from invoice2018 A, YB_BNAMES B " +
-//                " where A.xtype is not null AND A.req_no=B.SERIAL_NO " +
-//                " group by xtype,b_name " +
-//                " order by xtype,b_name;");
-        System.out.println("ssss");
+        ConnectionPoolManager cpm = new ConnectionPoolManager();
+        cpm.selectObeject("select xtype,b_name,count(*) from invoice2018 A, YB_BNAMES B " +
+                " where A.xtype is not null AND A.req_no=B.SERIAL_NO " +
+                " group by xtype,b_name " +
+                " order by xtype,b_name");
+//        System.out.println("ssss");
     }
 }
