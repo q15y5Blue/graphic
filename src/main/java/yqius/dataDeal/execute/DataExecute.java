@@ -4,53 +4,101 @@ import yqius.dataDeal.entity.Child;
 import yqius.dataDeal.util.ConnectionPoolManager;
 import yqius.dataDeal.util.StrUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class DataExecute {
 
+    /**
+     * 数据来源于数据库
+     * xtype b_name count 三个字段,统计数据
+     * @return
+     */
     public List<Child> selectList(){
-        String sql = "select xtype,b_name,count(*) as count from invoice2018 A, YB_BNAMES B where A.xtype is not null AND A.req_no=B.SERIAL_NO group by xtype,b_name  order by xtype,b_name ";
+        String sql = "select xtype,b_name,count(*) as count from invoice2018 A, YB_BNAMES B " +
+                "where A.xtype is not null AND A.req_no=B.SERIAL_NO group by xtype,b_name  order by xtype,b_name ";
         ConnectionPoolManager cpm= new ConnectionPoolManager();
         List list = cpm.selectArray(sql,Child.class);
-        System.out.println(list);
         return list;
     }
 
-    public List dealWithData(List dataList){
+    public void dealWithData(List<Child> dataList){
         List list = new ArrayList();
+        HashMap<String,List<Child>> hashMap = new HashMap<String,List<Child>>();
+        for(Child li:dataList){
+            if(!hashMap.containsKey(li.getXtype())){
+                List childList =new ArrayList<Child>();
+                childList.add(li);
+                hashMap.put(li.getXtype(),childList);
+            }else{
+                List existList =hashMap.get(li.getXtype());
+                existList.add(li);
+                hashMap.put(li.getXtype(),existList);
+            }
+        }
+        this.countType(hashMap);
+//        System.out.println(hashMap);
+//        return hashMap;
+    }
+
+    //大类HashMap
+    public HashMap countType(HashMap<String,List<Child>> hashMap){
+        HashMap<String,List> newHash = new HashMap<String,List>();
+        for(Map.Entry<String,List<Child>> entry:hashMap.entrySet()){
+            System.out.println("________________________________");
+            System.out.println("类别"+entry.getKey());
+            newHash.put(entry.getKey(),this.countList(entry.getValue()));
+        }
+//        System.out.println("new Hash");
+//        System.out.println(newHash);
+        return newHash;
+    }
+
+    public List<HashMap> countList(List<Child> li){
+        List<HashMap> list =  new ArrayList<>();
+        HashMap<String,Integer> hashMap = new HashMap<String,Integer>();
+        for(Child child:li){
+           for(String str:child.getB_nameList()){
+                if(!hashMap.containsKey(str)){
+                    hashMap.put(str,child.getCount());
+                }else{
+                    Integer tempCount = hashMap.get(str);
+                    hashMap.put(str,tempCount+child.getCount());
+                }
+           }
+        }
+        list =this.sortHashByValue(hashMap);
+        System.out.println(list);
+        //需要加一层hash排序
         return list;
+    }
+
+    /**
+     * 排序map
+     * @param hashMap
+     * @return
+     */
+    public List sortHashByValue(HashMap hashMap){
+        List<Map.Entry<String,Integer>> list=new ArrayList<>();
+        list.addAll(hashMap.entrySet());
+        DataExecute.ValueCompare vs = new ValueCompare();
+        Collections.sort(list,vs);
+        return list;
+    }
+
+    private static class ValueCompare implements Comparator<Map.Entry<String,Integer>>{
+        @Override
+        public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+            return o2.getValue()-o1.getValue();
+        }
     }
 
     public static void main(String[] args) {
-//       List<Child> dataList = new DataExecute().selectList();
-//       HashMap<String,Child> hashMap = new HashMap<String,Child>();
-//       for(Child li:dataList){
-//            if(!hashMap.containsKey(li.getXtype())){
-//                hashMap.put(li.getXtype(),li);
-//            }else{
-//                List tempList = li.getB_nameList();
-//
-//                Child hasli = hashMap.get(li.getXtype());
-//                //这咋又个错啊？
-//                System.out.println(tempList);
-//                System.out.println(hasli.getB_nameList());
-//                hasli.getB_nameList().addAll(1,tempList);
-//                hashMap.put(li.getXtype(),hasli);
-//            }
-//       }
-//        System.out.println(hashMap);
-        new DataExecute().test();
-    }
-
-    public void test(){
-    String str1 = "【交通费】市内交通费, 【专用材料购置费】实验材料购置, 【邮电费】邮寄";
-    String str2 = "【交通费】社会车辆包车费, 【维修（护）费】电梯维修保养";
-    List list1 = StrUtil.arrayToListSplit(str1,",");
-    List list2 = StrUtil.arrayToListSplit(str2,",");
-
-    list1.addAll(list2);
+        DataExecute de = new DataExecute();
+        List<Child> dataList = de.selectList();
+        de.dealWithData(dataList);
 
     }
+
+
+
 }

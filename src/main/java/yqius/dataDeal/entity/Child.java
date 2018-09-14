@@ -10,7 +10,7 @@ public class Child {
     private String xtype;
     private String b_name;
     private Integer count;
-    private List b_nameList = new ArrayList();
+    private List<String> b_nameList = new ArrayList();
 
     public Child() {
     }
@@ -40,20 +40,20 @@ public class Child {
         this.count = count;
     }
 
-    public List getB_nameList() {
+    public List<String> getB_nameList() {
         return b_nameList;
     }
 
-    public void setB_nameList(List b_nameList) {
+    public void setB_nameList(List<String> b_nameList) {
         this.b_nameList = b_nameList;
     }
 
     @Override
     public String toString() {
-        return "Child{" +
-                "xtype='" + xtype + '\'' +
-                ", b_name='" + b_name + '\'' +
-                ", count=" + count +
+        return "Child:{" +
+                "xtype:'" + xtype + '\'' +
+                ", b_name:'" + b_name + '\'' +
+                ", count:" + count +
                 '}';
     }
 }

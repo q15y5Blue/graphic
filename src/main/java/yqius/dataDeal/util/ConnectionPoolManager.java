@@ -47,8 +47,8 @@ public class ConnectionPoolManager implements SelectInterface{
                     BeanUtils.setProperty(obj,rs.getMetaData().getColumnName(i).toLowerCase(),StrUtil.trimStr(rs.getString(i)));
                 }
                 list.add(obj);
-                rowNumber ++;//test
-                if(rowNumber >100) break;//test
+//                rowNumber ++;//test
+//                if(rowNumber >100) break;//test
             }
             return list;
         }catch (Exception e){
