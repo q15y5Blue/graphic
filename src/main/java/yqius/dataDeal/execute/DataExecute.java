@@ -48,8 +48,6 @@ public class DataExecute {
             System.out.println("类别"+entry.getKey());
             newHash.put(entry.getKey(),this.countList(entry.getValue()));
         }
-//        System.out.println("new Hash");
-//        System.out.println(newHash);
         return newHash;
     }
 
@@ -80,11 +78,12 @@ public class DataExecute {
     public List sortHashByValue(HashMap hashMap){
         List<Map.Entry<String,Integer>> list=new ArrayList<>();
         list.addAll(hashMap.entrySet());
-        DataExecute.ValueCompare vs = new ValueCompare();
-        Collections.sort(list,vs);
+//        DataExecute.ValueCompare vs = new ValueCompare();
+        Collections.sort(list,(n1,n2)->(n2.getValue()-n1.getValue()));
         return list;
     }
 
+    @Deprecated
     private static class ValueCompare implements Comparator<Map.Entry<String,Integer>>{
         @Override
         public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
@@ -96,7 +95,6 @@ public class DataExecute {
         DataExecute de = new DataExecute();
         List<Child> dataList = de.selectList();
         de.dealWithData(dataList);
-
     }
 
 
