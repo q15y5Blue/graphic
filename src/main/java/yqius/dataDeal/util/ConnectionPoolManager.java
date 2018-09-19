@@ -1,6 +1,5 @@
 package yqius.dataDeal.util;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +11,7 @@ import yqius.dataDeal.util.inter.SelectInterface;
 public class ConnectionPoolManager implements SelectInterface{
 
 
-    /** m
+    /**
      * 虚假的接口
      * 为了配合现有系统
      * @param str
@@ -60,6 +59,4 @@ public class ConnectionPoolManager implements SelectInterface{
         }
         return null;
     }
-
-
 }
