@@ -2,6 +2,10 @@ package yqius.dataDeal.excelData;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import yqius.dataDeal.documentParse.DocumentPaser;
+import yqius.dataDeal.excelData.entity.Tables;
 
 import java.util.List;
 import java.io.*;
@@ -14,11 +18,10 @@ import java.util.Map;
  */
 public class SXSSFMethod {
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {
-        String path = "workbook.xlsx";
+        String path = "./datas/workbook.xlsx";
         SXSSFMethod sxssfMethod = new SXSSFMethod();
         sxssfMethod.readExcelToHtml(path);
     }
@@ -37,29 +40,32 @@ public class SXSSFMethod {
         }
         return "";
     }
+
     private void readWorkbook(Workbook workbook) {
-        StringBuffer strBuffer = new StringBuffer();
+//        StringBuffer strBuffer = new StringBuffer();
+        Tables newTable = new Tables();
         Sheet sheet = workbook.getSheetAt(0);
         List<CellRangeAddress> list = sheet.getMergedRegions();
-        strBuffer.append("<table style='border-collapse:collapse;' width='100%'>");
         //循环行
+        newTable.setAttr("style","border-collapse:collapse;");
+        newTable.setAttr("width","100%");
         for(int rowNumber =sheet.getFirstRowNum();rowNumber<=sheet.getLastRowNum();rowNumber++){
             Row row = sheet.getRow(rowNumber);
-            if(row == null){
-                strBuffer.append("<tr><td>&nbsp;&nbsp;</td></tr>");
+            if(row == null){ ;
+                newTable.addRows(new Tables.Row().createRow("  "));
                 continue;
             }
-            strBuffer.append("<tr>");
             //循环某行 的列
             for(int colNumber = 0;colNumber<row.getLastCellNum();colNumber++){
                 Cell cell = row.getCell(colNumber);
                 if(cell == null){
-                    strBuffer.append("<td> </td>");
+//                    strBuffer.append("<td> </td>");
                     continue;
                 }
 //                String stringValue = this.getCellValue();
+                //
             }
-            strBuffer.append("</tr>");
+//            strBuffer.append("</tr>");
         }
 //        Map<String,String> map[]=this.getMergeMaps(sheet);---------------------------------------待定
     }
@@ -67,7 +73,6 @@ public class SXSSFMethod {
     private Map<String,String>[] getMergeMaps(Sheet sheet) {
         Map [] maps = new Map[sheet.getLastRowNum()];
         int mergeNumber = sheet.getNumMergedRegions();
-
         for(int i=0;i<mergeNumber;i++){
             CellRangeAddress range = sheet.getMergedRegion(i);
             int topRow = range.getFirstRow();
@@ -78,11 +83,17 @@ public class SXSSFMethod {
         }
         return  maps;
     }
+
+    /**
+     * 未完成
+     * @param cell
+     * @return
+     */
     private String getCellValue(Cell cell) {
-        switch (cell.getCellType()){
-//            case Cell.CELL_TYPE_NUMERIC:
-        }
-        return "";
+//        switch (cell.getCellType()){
+//            case NUMERIC:
+//        }
+        return cell.getStringCellValue();
     }
 
 
