@@ -4,6 +4,9 @@ import org.jsoup.nodes.Element;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 这里三个类
+ */
 public class Tables {
     private List<Row> rows = new ArrayList<Row>();
     private Element table;
@@ -43,6 +46,9 @@ public class Tables {
             tr.appendChild(col.td);
             cols.add(col);
         }
+        public void setAttr(String s1,String s2){
+            tr.attr(s1,s2);
+        }
 
         /**
          * 创建新的Row
@@ -77,13 +83,16 @@ public class Tables {
                 cols.addContent(content);
                 return cols;
             }
+            public void setAttr(String s1,String s2){
+                td.attr(s1,s2);
+            }
         }
     }
 
     public void printTable(){
         System.out.println(table);
     }
-    public static void main(String[] args) {
+//    public static void main(String[] args) {
 //        Row row =new Row();
 //        Row.Cols col = new Row.Cols();
 //        col.addContent("hahah");
@@ -93,6 +102,6 @@ public class Tables {
 //        ta.addRows(row);
 //        System.out.println(ta);
 //        System.out.println();
-    }
+//    }
 
 }
