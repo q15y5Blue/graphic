@@ -4,7 +4,6 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import yqius.dataDeal.excelData.entity.Tables;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.io.*;
@@ -41,8 +40,8 @@ public class SXSSFMethod {
     private Tables readWorkbook(Workbook workbook) {
         Tables newTable = new Tables();
         Sheet sheet = workbook.getSheetAt(0);
-        Map<Integer,Map> locationMap = this.getCellRangeList(sheet.getMergedRegions());
-        int index = 0;
+//        Map<Integer,Map> locationMap = this.getCellRangeList(sheet.getMergedRegions());
+        int indexOfMergedArea = 0;
         newTable.setAttr("style","border-collapse:collapse;");
         newTable.setAttr("width","100%");
         //循环行
@@ -61,10 +60,24 @@ public class SXSSFMethod {
                     rows.addCols(col);
                     continue;
                 }else {
+                    if(this.isInMergedArea(cell)!=-1){
+                        indexOfMergedArea = this.isInMergedArea(cell);
+                        int right = sheet.getMergedRegion(indexOfMergedArea).getLastColumn();
+                        int left = sheet.getMergedRegion(indexOfMergedArea).getFirstColumn();
+                        int top = sheet.getMergedRegion(indexOfMergedArea).getFirstRow();
+                        int bottom =sheet.getMergedRegion(indexOfMergedArea).getLastRow();
+                        //第一个啊
+                        if(cell.getRowIndex()==top&&cell.getColumnIndex()==left){
+                            Tables.Row.Cols co = new Tables.Row.Cols(this.getCellValue(cell));
+                            co.setAttr("colspan", String.valueOf(right-left+1));
+                            co.setAttr("rowspan", String.valueOf(bottom-top+1));
+                            rows.addCols(co);
+                        }
 
-//                    Tables.Row.Cols co = new Tables.Row.Cols(this.getCellValue(cell));
-//                    rows.addCols(co);
-
+                    }else {
+                        Tables.Row.Cols co = new Tables.Row.Cols(this.getCellValue(cell));
+                        rows.addCols(co);
+                    }
                 }
             }
             newTable.addRows(rows);
@@ -72,28 +85,19 @@ public class SXSSFMethod {
         return newTable;
     }
 
-
-    /**
-     *
-     * @param list
-     * @return list 存每合并区域的长宽和首位坐标
-     */
-    private Map<Integer,Map> getCellRangeList(List<CellRangeAddress> list) {
-        Map<Integer,Map> locationMap = new HashMap<Integer, Map>();
-        int index = 0;
-        for(CellRangeAddress cellLi:list){
-            Map<String,Integer> map =new HashMap<String,Integer>();
-            int rowspan =cellLi.getLastRow()-cellLi.getFirstRow()+1;//
-            int colspan = cellLi.getLastColumn()-cellLi.getFirstColumn()+1;
-            map.put("row",cellLi.getFirstRow());
-            map.put("col",cellLi.getFirstColumn());
-            map.put("rowspan",rowspan);
-            map.put("colspan",colspan);
-            locationMap.put(index,map);
-            index ++;
+    private Integer isInMergedArea(Cell cell) {
+        int flag = -1;
+        List<CellRangeAddress> list = cell.getSheet().getMergedRegions();
+        for(CellRangeAddress cellAddr  :list){
+            if(cellAddr.isInRange(cell)){
+                flag = list.indexOf(cellAddr);
+                return flag;
+            }
         }
-        return locationMap;
+        return flag;
     }
+
+
 
     /**
      * 未完成
@@ -107,7 +111,7 @@ public class SXSSFMethod {
             case STRING:
                 return cell.getStringCellValue();
         }
-        return "";
+        return " ";
     }
 
     public static void main(String[] args) {
