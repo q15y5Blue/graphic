@@ -8,8 +8,8 @@ import java.util.List;
  * 这里三个类
  */
 public class Tables {
-    private List<Row> rows = new ArrayList<Row>();
-    private Element table;
+    public List<Row> rows = new ArrayList<Row>();
+    public Element table;
 
     public Tables() {
         table = new Element("table");
@@ -28,15 +28,21 @@ public class Tables {
     }
 
     public void setAttr(String s1,String s) {
-        table.attr(s1,s);
+        switch (s1){
+            case "addClass":
+                table.addClass(s);
+                break;
+        default:
+            table.attr(s1,s);
+        }
     }
 
     /**
      * Tr
      */
     public static class Row{
-        List<Cols> cols;
-        Element tr ;
+        public List<Cols> cols;
+        public Element tr ;
 
         public Row() {
             tr = new Element("tr");
@@ -66,7 +72,7 @@ public class Tables {
          * td
          */
         public static class Cols{
-            Element td;
+            public Element td;
             public Cols(){
                 td = new Element("td");
             }
@@ -92,16 +98,6 @@ public class Tables {
     public void printTable(){
         System.out.println(table);
     }
-//    public static void main(String[] args) {
-//        Row row =new Row();
-//        Row.Cols col = new Row.Cols();
-//        col.addContent("hahah");
-//        row.addCols(col);
-//        Tables ta = new Tables();
-//
-//        ta.addRows(row);
-//        System.out.println(ta);
-//        System.out.println();
-//    }
+
 
 }

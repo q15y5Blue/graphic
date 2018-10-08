@@ -1,49 +1,23 @@
-package yqius.dataDeal.excelData;
+package yqius.dataDeal.excelData.generate;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
+import yqius.dataDeal.documentParse.ExcelParser;
 import yqius.dataDeal.excelData.entity.Tables;
 
-import java.util.HashMap;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
-import java.io.*;
-import java.util.Map;
 
-/**
- * HSSF biff8
- * XSSF 2007以后
- */
-public class SXSSFMethod {
-
-    public static String PATH = "./datas/workbook.xlsx";
-
-    public synchronized String readExcelToHtml(String path) {
-        try {
-            InputStream input = new FileInputStream(path);
-            Workbook wb = WorkbookFactory.create(input);
-            Tables tb = this.readWorkbook(wb);//read Table
-            tb.printTable();
-            OutputStream outputStream = new FileOutputStream(path);
-            wb.write(outputStream);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
-    /**
-     *
-     * @param workbook
-     */
-    private Tables readWorkbook(Workbook workbook) {
+public class TableGenerate {
+    public  Tables readWorkbook(Workbook workbook) {
         Tables newTable = new Tables();
         Sheet sheet = workbook.getSheetAt(0);
-//        Map<Integer,Map> locationMap = this.getCellRangeList(sheet.getMergedRegions());
         int indexOfMergedArea = 0;
         newTable.setAttr("style","border-collapse:collapse;");
         newTable.setAttr("width","100%");
+        newTable.setAttr("addClass","inTable");
         //循环行
         for(int rowNumber =sheet.getFirstRowNum();rowNumber <= sheet.getLastRowNum();rowNumber++){
             Row row = sheet.getRow(rowNumber);//Excel row
@@ -69,11 +43,12 @@ public class SXSSFMethod {
                         //第一个啊
                         if(cell.getRowIndex()==top&&cell.getColumnIndex()==left){
                             Tables.Row.Cols co = new Tables.Row.Cols(this.getCellValue(cell));
-                            co.setAttr("colspan", String.valueOf(right-left+1));
-                            co.setAttr("rowspan", String.valueOf(bottom-top+1));
+                            int colspan = right-left+1;
+                            int rowspan = bottom-top+1;
+                            if (colspan!=1) co.setAttr("colspan", String.valueOf(colspan));
+                            if (rowspan!=1) co.setAttr("rowspan", String.valueOf(rowspan));
                             rows.addCols(co);
                         }
-
                     }else {
                         Tables.Row.Cols co = new Tables.Row.Cols(this.getCellValue(cell));
                         rows.addCols(co);
@@ -85,6 +60,11 @@ public class SXSSFMethod {
         return newTable;
     }
 
+    /**
+     * get合并区域index
+     * @param cell
+     * @return 合并区域的index
+     */
     private Integer isInMergedArea(Cell cell) {
         int flag = -1;
         List<CellRangeAddress> list = cell.getSheet().getMergedRegions();
@@ -98,7 +78,6 @@ public class SXSSFMethod {
     }
 
 
-
     /**
      * 未完成
      * @param cell
@@ -110,12 +89,11 @@ public class SXSSFMethod {
                 return String.valueOf(cell.getNumericCellValue());
             case STRING:
                 return cell.getStringCellValue();
+            case _NONE:
+                return "   ";
+            case BLANK:
+                return " ";
         }
-        return " ";
-    }
-
-    public static void main(String[] args) {
-        SXSSFMethod sf = new SXSSFMethod();
-        sf.readExcelToHtml(PATH);
+        return "";
     }
 }
