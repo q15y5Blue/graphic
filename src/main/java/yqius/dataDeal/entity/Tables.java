@@ -1,11 +1,13 @@
-package yqius.dataDeal.excelData.entity;
+package yqius.dataDeal.entity;
 
 import org.jsoup.nodes.Element;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 这里三个类
+ * 对Table类进行再封装
+ * 其中包括了基本数据结构
+ * 和jsoup中的Element
  */
 public class Tables {
     public List<Row> rows = new ArrayList<Row>();
@@ -34,6 +36,7 @@ public class Tables {
                 break;
         default:
             table.attr(s1,s);
+            break;
         }
     }
 

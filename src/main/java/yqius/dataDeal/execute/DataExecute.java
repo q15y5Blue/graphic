@@ -2,10 +2,13 @@ package yqius.dataDeal.execute;
 
 import yqius.dataDeal.entity.Child;
 import yqius.dataDeal.util.ConnectionPoolManager;
-import yqius.dataDeal.util.StrUtil;
+import yqius.dataDeal.util.dboperation.SelectImpl;
 
 import java.util.*;
 
+/**
+ * 001赵老师项目中执行类
+ */
 public class DataExecute {
 
     /**
@@ -15,9 +18,10 @@ public class DataExecute {
      */
     public List<Child> selectList(){
         String sql = "select xtype,b_name,count(*) as count from invoice2018 A, YB_BNAMES B " +
-                "where A.xtype is not null AND A.req_no=B.SERIAL_NO group by xtype,b_name  order by xtype,b_name ";
-        ConnectionPoolManager cpm= new ConnectionPoolManager();
-        List list = cpm.selectArray(sql,Child.class);
+                "where A.xtype is not null AND A.req_no=B.SERIAL_NO " +
+                "group by xtype,b_name  order by xtype,b_name ";
+        SelectImpl slp= new SelectImpl();
+        List list = slp.selectArray(sql,Child.class);
         return list;
     }
 
@@ -36,8 +40,6 @@ public class DataExecute {
             }
         }
         this.countType(hashMap);
-//        System.out.println(hashMap);
-//        return hashMap;
     }
 
     //大类HashMap
@@ -79,6 +81,7 @@ public class DataExecute {
         List<Map.Entry<String,Integer>> list=new ArrayList<>();
         list.addAll(hashMap.entrySet());
 //        DataExecute.ValueCompare vs = new ValueCompare();
+//        Collections.sort(list,vs);
         Collections.sort(list,(n1,n2)->(n2.getValue()-n1.getValue()));
         return list;
     }
@@ -96,7 +99,6 @@ public class DataExecute {
         List<Child> dataList = de.selectList();
         de.dealWithData(dataList);
     }
-
 
 
 }

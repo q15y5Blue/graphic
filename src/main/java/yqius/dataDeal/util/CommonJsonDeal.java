@@ -10,29 +10,13 @@ import java.util.HashSet;
 
 public class CommonJsonDeal {
 
-    private static volatile CommonJsonDeal instance = null;
-
-    private CommonJsonDeal() {
-    }
-
-    public static CommonJsonDeal getInstance() {
-        if (instance == null) {
-            synchronized (CommonJsonDeal.class) {
-                if (instance == null) {
-                    instance = new CommonJsonDeal();
-                }
-            }
-        }
-        return instance;
-    }
-    // 将json属性中的值提出来封装
-
     /**
+     * 将json属性中的值提出来封装
      * @param "jsonStr"
      * @param "keys需要提出来的KEYS"
      * @return jsonObject
      */
-    private JSONObject upJsonDeal(String jsonStr, String keys) {
+    private static JSONObject upJsonDeal(String jsonStr, String keys) {
         JSONObject jsonObject = JSONObject.fromObject(jsonStr);
         String firstValue = "";
         JSONObject newObj = new JSONObject();
@@ -54,7 +38,7 @@ public class CommonJsonDeal {
      *
      * @return
      */
-    private JSONArray updateList(String jsonStr, String keys) {
+    private static JSONArray updateList(String jsonStr, String keys) {
         JSONArray jsonArray = JSONArray.fromObject(jsonStr);
         JSONArray temp = new JSONArray();
         try {
@@ -91,12 +75,12 @@ public class CommonJsonDeal {
      * @param "keys"
      * @return jsonArray
      */
-    private JSONArray dealArray(String jsonStr, String keys) {
+    private static JSONArray dealArray(String jsonStr, String keys) {
         JSONArray paramArray = JSONArray.fromObject(jsonStr);
         JSONArray jsonArray = new JSONArray();
         for (Object o : paramArray) {
             JSONObject jo = JSONObject.fromObject(o);
-            jo = instance.upJsonDeal(jo.toString(), keys);
+            jo = upJsonDeal(jo.toString(), keys);
             jsonArray.add(jo);
         }
         return jsonArray;
@@ -109,9 +93,9 @@ public class CommonJsonDeal {
      * @param "keys"
      * @return
      */
-    public JSONArray updateJsonType(String jsonArrayStr, String keys) {
-        String first = instance.dealArray(jsonArrayStr, keys).toString();
-        JSONArray array = instance.updateList(first, keys);
+    public static JSONArray updateJsonType(String jsonArrayStr, String keys) {
+        String first = dealArray(jsonArrayStr, keys).toString();
+        JSONArray array = updateList(first, keys);
         return array;
     }
 
@@ -123,7 +107,7 @@ public class CommonJsonDeal {
      * @param keys
      * @return
      */
-    public JSONArray updateJsonTypeByList(JSONArray jsonArray, String keys) {
+    public static JSONArray updateJsonTypeByList(JSONArray jsonArray, String keys) {
         JSONArray rsArray = new JSONArray();
         try {
             for (Object jo : jsonArray) {
@@ -131,7 +115,7 @@ public class CommonJsonDeal {
                 if (!job.containsKey("list")) {
                     return jsonArray;
                 } else {
-                    job.put("list", instance.updateJsonType(job.getString("list"), keys));
+                    job.put("list", updateJsonType(job.getString("list"), keys));
                     rsArray.add(job);
                 }
             }
@@ -189,7 +173,7 @@ public class CommonJsonDeal {
      */
     public static JSONArray createTree(JSONArray jsonArray, String... keys) {
         if (jsonArray == null || keys.length == 0 || keys == null) return null;
-        JSONArray jsonArr = instance.updateJsonType(jsonArray.toString(), keys[0]);//list化
+        JSONArray jsonArr = updateJsonType(jsonArray.toString(), keys[0]);//list化
         JSONArray rsArray = new JSONArray();
         if (keys.length > 1) {
             for (Object obj : jsonArr) {

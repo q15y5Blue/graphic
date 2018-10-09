@@ -1,17 +1,21 @@
-package yqius.dataDeal.excelData.generate;
+package yqius.dataDeal.excelData.documentParse;
 
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
-import yqius.dataDeal.documentParse.ExcelParser;
-import yqius.dataDeal.excelData.entity.Tables;
+import yqius.dataDeal.entity.Tables;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
-public class TableGenerate {
-    public  Tables readWorkbook(Workbook workbook) {
+/**
+ * inputExcel and generate
+ */
+public class ExcelTableParser {
+
+
+    public Tables parseExcel(Workbook workbook) {
         Tables newTable = new Tables();
         Sheet sheet = workbook.getSheetAt(0);
         int indexOfMergedArea = 0;

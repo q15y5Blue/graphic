@@ -4,7 +4,8 @@ import org.apache.poi.ss.usermodel.*;
 import java.io.*;
 
 /**
- * HSSF biff8
+ * 文件操作类
+ * Excel文件 基本读写操作的封装
  * XSSF 2007以后
  */
 public class FileMethod {
@@ -13,6 +14,8 @@ public class FileMethod {
         if(path!=""&&!path.equals("")){
             this.PATH=path;
         }
+    }
+    public FileMethod(){
     }
 
     /**
