@@ -1,9 +1,15 @@
-package yqius.dataDeal.util.inter;
+package yqius.dataDeal.util.dboperation.inter;
 
 import java.util.Collection;
-import java.util.List;
 
 public interface SelectInterface {
     public Object selectObeject(String sql);
+
+    /**
+     *
+     * @param sql
+     * @param clazz --Entity
+     * @return array of entity
+     */
     public Collection selectArray(String sql,Class clazz);
 }

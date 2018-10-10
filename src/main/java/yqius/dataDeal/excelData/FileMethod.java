@@ -4,15 +4,21 @@ import org.apache.poi.ss.usermodel.*;
 import java.io.*;
 
 /**
- * HSSF biff8
+ * 输入xlsx
+ * 输出html
+ * 文件操作类
+ * Excel文件 基本读写操作的封装
  * XSSF 2007以后
  */
 public class FileMethod {
-    public String PATH = "./datas/workbook.xlsx";
+    public static String PATH = "./datas/workbook.xlsx";
+    public static String PATHOUT = "./datas/workbook.html";
     public FileMethod(String path){
         if(path!=""&&!path.equals("")){
             this.PATH=path;
         }
+    }
+    public FileMethod(){
     }
 
     /**
@@ -43,21 +49,26 @@ public class FileMethod {
             fileWriter = new FileOutputStream(outPath);
             outputStreamWriter = new OutputStreamWriter(fileWriter);
             outputStreamWriter.write(str);
+            outputStreamWriter.flush();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
+            if(outputStreamWriter!=null){
                 try {
-                    if(outputStreamWriter==null) {
-                        outputStreamWriter.close();
-                    }
-                    if(fileWriter==null){
-                        fileWriter.close();
-                    }
+                    outputStreamWriter.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+            if(fileWriter!=null){
+                try {
+                    fileWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

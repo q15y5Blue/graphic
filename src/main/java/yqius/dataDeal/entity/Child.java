@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * 001pj赵老师项目
+ */
 public class Child {
     private String xtype;
     private String b_name;
