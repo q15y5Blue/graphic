@@ -8,6 +8,9 @@ import net.sf.json.JSONObject;
 import java.util.Arrays;
 import java.util.HashSet;
 
+/**
+ * json util
+ */
 public class CommonJsonDeal {
 
     /**

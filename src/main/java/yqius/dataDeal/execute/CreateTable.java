@@ -2,6 +2,7 @@ package yqius.dataDeal.execute;
 
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jsoup.nodes.Element;
+import yqius.dataDeal.excelData.Constant;
 import yqius.dataDeal.excelData.FileMethod;
 import yqius.dataDeal.excelData.documentParse.DocumentPaser;
 import yqius.dataDeal.entity.Tables;
@@ -17,6 +18,7 @@ public class CreateTable {
         Workbook wb = xssfMethod.readExcel();
         Tables tables = DocumentPaser.getInstance().parseExcelXSSF(wb);
         Element content =HtmlGenerateFactory.getInstance().generateHTML(tables);
-        System.out.println(content);
+        System.out.println(content.outerHtml());
+        xssfMethod.writeSteam(Constant.OUTPATH,content.outerHtml());
     }
 }
