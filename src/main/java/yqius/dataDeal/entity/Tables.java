@@ -25,8 +25,10 @@ public class Tables {
     }
 
     public void addRows(Row rows){
-        table.appendChild(rows.tr);
-        this.rows.add(rows);
+        if(rows.cols.size()!=0){
+            table.appendChild(rows.tr);
+            this.rows.add(rows);
+        }
     }
 
     public void setAttr(String s1,String s) {
@@ -48,8 +50,8 @@ public class Tables {
         public Element tr ;
 
         public Row() {
-            tr = new Element("tr");
-            cols = new ArrayList<Cols>();
+            this.tr = new Element("tr");
+            this.cols = new ArrayList<Cols>();
         }
         public void addCols(Cols col){
             tr.appendChild(col.td);
@@ -97,10 +99,4 @@ public class Tables {
             }
         }
     }
-
-    public void printTable(){
-        System.out.println(table);
-    }
-
-
 }
