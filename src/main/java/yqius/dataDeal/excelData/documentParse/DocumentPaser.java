@@ -8,7 +8,7 @@ import yqius.dataDeal.entity.Tables;
  * 解析html或者Excel文件的主要类
  */
 public class DocumentPaser {
-    public static String PATH ="./datas/test.html";
+//    public static String PATH ="./datas/test.html";
     public static volatile DocumentPaser instance = null;
     public static DocumentPaser getInstance() {
         if (instance == null) {

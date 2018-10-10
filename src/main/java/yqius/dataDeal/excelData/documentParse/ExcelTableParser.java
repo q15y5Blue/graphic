@@ -77,7 +77,7 @@ public class ExcelTableParser {
     private Integer isInMergedArea(Cell cell) {
         int flag = -1;
         List<CellRangeAddress> list = cell.getSheet().getMergedRegions();
-        for(CellRangeAddress cellAddr  :list){
+        for(CellRangeAddress cellAddr:list){
             if(cellAddr.isInRange(cell)){
                 flag = list.indexOf(cellAddr);
                 return flag;
@@ -99,7 +99,7 @@ public class ExcelTableParser {
             case STRING:
                 return cell.getStringCellValue();
             case _NONE:
-                return "   ";
+                return " ";
             case BLANK:
                 return " ";
         }

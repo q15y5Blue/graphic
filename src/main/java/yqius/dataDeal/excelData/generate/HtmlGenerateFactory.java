@@ -1,6 +1,7 @@
 package yqius.dataDeal.excelData.generate;
 
 import org.jsoup.nodes.Element;
+import yqius.dataDeal.excelData.Constant;
 import yqius.dataDeal.excelData.documentParse.DocumentPaser;
 import yqius.dataDeal.entity.Tables;
 
@@ -28,7 +29,7 @@ public class HtmlGenerateFactory {
      */
     public Element generateHTML(Tables tables){
         Element html = new Element("html");
-        html.appendChild(this.getHead("xxxxxx","123123123","xasdasdasd"));
+        html.appendChild(this.getHead(Constant.STYLEPAHT,Constant.SCRIPT1,Constant.SCRIPT2));
         html.appendChild(this.getContent(tables));
         return html;
     }

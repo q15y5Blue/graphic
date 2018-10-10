@@ -1,0 +1,44 @@
+
+#tableContent{
+    text-align: center;
+}
+button{
+    border: 1px;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+table.inTable {
+    width:1000px;
+    margin-left: auto;
+    margin-right: auto;
+    align-content: center;
+    border-width: 0px;
+    border-style: solid;
+    border-color: #666666;
+    border-collapse: collapse;
+}
+table.inTable tr{
+    border:0px solid #666666;
+}
+table.inTable td {
+    text-align: center;
+    border-style: solid;
+    border-color: #666666;
+    width: 10%;
+    height: 10%;
+}
+.noBorder{
+    border-width: 0px;
+    border-style: hidden;
+}
+h3{
+    margin: auto;
+    align-content: center;
+}
+.currency{
+    text-align: right;
+}
