@@ -1,5 +1,6 @@
 package yqius.dataDeal.excelData.documentParse;
 
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -25,37 +26,41 @@ public class ExcelTableParser {
         //循环行
         for(int rowNumber =sheet.getFirstRowNum();rowNumber <= sheet.getLastRowNum();rowNumber++){
             Row row = sheet.getRow(rowNumber);//Excel row
-            Tables.Row rows = new Tables.Row();//html row
-            if(row == null){ ;
-                newTable.addRows(rows.createRow("  "));
-                continue;
+            Tables.Row rows =null;//html row
+            if(row == null){
+                rows = new Tables.Row();
+                rows.addCols(new Tables.Row.Cols(" "));
             }
-            //循环某行 的列
-            for(int colNumber = 0;colNumber<row.getLastCellNum();colNumber++){
-                Cell cell = row.getCell(colNumber);
-                if(cell == null){
+            //这里会出现<tr></tr>连起来用的情况
+            else {
+                rows = new Tables.Row();//<tr> </tr>
+//                循环某行 的列
+                for(int colNumber = 0;colNumber<row.getLastCellNum();colNumber++){
+                    Cell cell = row.getCell(colNumber);
                     Tables.Row.Cols col = new Tables.Row.Cols(" ");
-                    rows.addCols(col);
-                    continue;
-                }else {
-                    if(this.isInMergedArea(cell)!=-1){
-                        indexOfMergedArea = this.isInMergedArea(cell);
-                        int right = sheet.getMergedRegion(indexOfMergedArea).getLastColumn();
-                        int left = sheet.getMergedRegion(indexOfMergedArea).getFirstColumn();
-                        int top = sheet.getMergedRegion(indexOfMergedArea).getFirstRow();
-                        int bottom =sheet.getMergedRegion(indexOfMergedArea).getLastRow();
-                        //第一个啊
-                        if(cell.getRowIndex()==top&&cell.getColumnIndex()==left){
+                    if(cell == null){
+                        rows.addCols(col);
+                    }else {
+                        //cell位于合并区域内
+                        if(this.isInMergedArea(cell)!=-1){
+                            indexOfMergedArea = this.isInMergedArea(cell);
+                            int left = sheet.getMergedRegion(indexOfMergedArea).getFirstColumn();
+                            int top = sheet.getMergedRegion(indexOfMergedArea).getFirstRow();
+                            //第一个啊
+                            if(cell.getRowIndex()==top&&cell.getColumnIndex()==left){
+                                int bottom =sheet.getMergedRegion(indexOfMergedArea).getLastRow();
+                                int right = sheet.getMergedRegion(indexOfMergedArea).getLastColumn();
+                                Tables.Row.Cols co = new Tables.Row.Cols(this.getCellValue(cell));
+                                int colspan = right-left+1;
+                                int rowspan = bottom-top+1;
+                                if (colspan!=1) co.setAttr("colspan", String.valueOf(colspan));
+                                if (rowspan!=1) co.setAttr("rowspan", String.valueOf(rowspan));
+                                rows.addCols(co);
+                            }
+                        }else {
                             Tables.Row.Cols co = new Tables.Row.Cols(this.getCellValue(cell));
-                            int colspan = right-left+1;
-                            int rowspan = bottom-top+1;
-                            if (colspan!=1) co.setAttr("colspan", String.valueOf(colspan));
-                            if (rowspan!=1) co.setAttr("rowspan", String.valueOf(rowspan));
                             rows.addCols(co);
                         }
-                    }else {
-                        Tables.Row.Cols co = new Tables.Row.Cols(this.getCellValue(cell));
-                        rows.addCols(co);
                     }
                 }
             }
