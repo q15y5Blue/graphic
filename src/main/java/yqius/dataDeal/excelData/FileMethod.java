@@ -11,8 +11,6 @@ import java.io.*;
  * XSSF 2007以后
  */
 public class FileMethod {
-//    public static String PATH = "./datas/workbook.xlsx";
-//    public static String PATHOUT = "./datas/workbook.html";
     public FileMethod(){
     }
 

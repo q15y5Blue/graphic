@@ -25,10 +25,8 @@ public class Tables {
     }
 
     public void addRows(Row rows){
-        if(rows.cols.size()!=0){
             table.appendChild(rows.tr);
             this.rows.add(rows);
-        }
     }
 
     public void setAttr(String s1,String s) {
@@ -95,7 +93,14 @@ public class Tables {
                 return cols;
             }
             public void setAttr(String s1,String s2){
-                td.attr(s1,s2);
+                switch (s1){
+                    case "addClass":
+                        td.addClass(s2);
+                        break;
+                    default:
+                        td.attr(s1,s2);
+                        break;
+                }
             }
         }
     }

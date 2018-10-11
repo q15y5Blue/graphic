@@ -53,12 +53,13 @@ public class ExcelTableParser {
                                 Tables.Row.Cols co = new Tables.Row.Cols(this.getCellValue(cell));
                                 int colspan = right-left+1;
                                 int rowspan = bottom-top+1;
-                                if (colspan!=1) co.setAttr("colspan", String.valueOf(colspan));
-                                if (rowspan!=1) co.setAttr("rowspan", String.valueOf(rowspan));
+                                if(colspan!=1)    co.setAttr("colspan", String.valueOf(colspan));
+                                if(rowspan!=1)    co.setAttr("rowspan", String.valueOf(rowspan));
                                 rows.addCols(co);
                             }
                         }else {
-                            Tables.Row.Cols co = new Tables.Row.Cols(this.getCellValue(cell));
+                            String cellValue = this.getCellValue(cell);
+                            Tables.Row.Cols co = new Tables.Row.Cols(cellValue);
                             rows.addCols(co);
                         }
                     }
@@ -101,7 +102,7 @@ public class ExcelTableParser {
             case _NONE:
                 return " ";
             case BLANK:
-                return " ";
+                return "&nbsp;";
         }
         return "";
     }
