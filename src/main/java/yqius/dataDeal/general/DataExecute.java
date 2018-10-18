@@ -1,8 +1,7 @@
-package yqius.dataDeal.execute;
+package yqius.dataDeal.general;
 
 import yqius.dataDeal.entity.Child;
-import yqius.dataDeal.util.ConnectionPoolManager;
-import yqius.dataDeal.util.dboperation.SelectImpl;
+import yqius.util.db.dboperation.SelectImpl;
 
 import java.util.*;
 

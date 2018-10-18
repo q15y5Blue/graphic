@@ -1,4 +1,4 @@
-package yqius.dataDeal.util;
+package yqius.util.db;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
@@ -28,7 +28,8 @@ public class ConnectionPool {
 
      private static DataSource getDatasource() {
         PoolProperties p = new PoolProperties();
-        p.setUrl("jdbc:oracle:thin:@192.168.15.94:1521/orcll");
+//        p.setUrl("jdbc:oracle:thin:@192.168.15.94:1521/orcll");
+         p.setUrl("jdbc:oracle:thin:@192.168.102.5:1521/orcl");
         p.setDriverClassName("oracle.jdbc.driver.OracleDriver");
         p.setUsername("fdall");
         p.setPassword("zhao");

@@ -1,10 +1,10 @@
-package yqius.dataDeal.util.dboperation;
+package yqius.util.db.dboperation;
 
 import org.apache.commons.beanutils.BeanUtils;
-import yqius.dataDeal.util.ConnectionPool;
-import yqius.dataDeal.util.ConnectionPoolManager;
+import yqius.util.db.ConnectionPool;
+import yqius.util.db.ConnectionPoolManager;
 import yqius.dataDeal.util.StrUtil;
-import yqius.dataDeal.util.dboperation.inter.SelectInterface;
+import yqius.util.db.dboperation.inter.SelectInterface;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -51,5 +51,25 @@ public class SelectImpl implements SelectInterface {
             pool.returnConnection(conn);
         }
         return null;
+    }
+//    Irene  DELETE * FROM table_name
+    @Override
+    public void insertData(String sql) {
+        ConnectionPool pool = ConnectionPoolManager.getPool("CMServer");//
+        PreparedStatement prs =null;
+        ResultSet rs = null;
+        Connection conn = null;
+        try{
+            conn = pool.getConnection();
+            prs = conn.prepareStatement(sql);
+            prs.executeUpdate();
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            pool.closePreparedStatement(prs);
+            pool.closeResultSet(rs);
+            pool.returnConnection(conn);
+        }
+
     }
 }

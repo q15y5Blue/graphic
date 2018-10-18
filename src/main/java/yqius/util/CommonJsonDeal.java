@@ -1,4 +1,4 @@
-package yqius.dataDeal.util;
+package yqius.util;
 
 import net.sf.json.JSON;
 import net.sf.json.JSONArray;

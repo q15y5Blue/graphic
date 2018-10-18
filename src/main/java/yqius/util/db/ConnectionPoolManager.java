@@ -1,12 +1,4 @@
-package yqius.dataDeal.util;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.*;
-
-import org.apache.commons.beanutils.BeanUtils;
-import yqius.dataDeal.util.dboperation.inter.SelectInterface;
+package yqius.util.db;
 
 public class ConnectionPoolManager {
 

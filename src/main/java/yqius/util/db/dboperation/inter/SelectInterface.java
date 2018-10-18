@@ -1,10 +1,10 @@
-package yqius.dataDeal.util.dboperation.inter;
+package yqius.util.db.dboperation.inter;
 
 import java.util.Collection;
 
 public interface SelectInterface {
     public Object selectObeject(String sql);
-
+    public void insertData(String sql);
     /**
      *
      * @param sql
