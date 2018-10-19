@@ -18,7 +18,7 @@ public class DataExecute {
     public List<Child> selectList(){
         String sql = "select xtype,b_name,count(*) as count from invoice2018 A, YB_BNAMES B " +
                 "where A.xtype is not null AND A.req_no=B.SERIAL_NO " +
-                "group by xtype,b_name  order by xtype,b_name ";
+                "group by xtype,b_name  order by xtype,b_nameww ";
         SelectImpl slp= new SelectImpl();
         List list = slp.selectArray(sql,Child.class);
         return list;
