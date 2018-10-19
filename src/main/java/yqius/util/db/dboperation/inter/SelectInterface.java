@@ -1,5 +1,7 @@
 package yqius.util.db.dboperation.inter;
 
+import yqius.util.db.ConnectionPool;
+
 import java.util.Collection;
 
 public interface SelectInterface {
@@ -12,4 +14,5 @@ public interface SelectInterface {
      * @return array of entity
      */
     public Collection selectArray(String sql,Class clazz);
+    public void delete(String sql);
 }

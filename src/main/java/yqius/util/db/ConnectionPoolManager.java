@@ -1,12 +1,18 @@
 package yqius.util.db;
 
-public class ConnectionPoolManager {
+//import org.apache.tomcat.jdbc.pool.ConnectionPool;
 
+import org.apache.tomcat.jdbc.pool.DataSource;
+import org.apache.tomcat.jdbc.pool.PoolProperties;
+
+import java.sql.SQLException;
+
+public class ConnectionPoolManager {
 
     /**
      * 虚假的接口
      * 为了配合现有系统
-     * @param str
+     * @param 'str
      * @return
      */
     public static ConnectionPool getPool(String str){

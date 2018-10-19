@@ -5,10 +5,11 @@ import yqius.util.db.ConnectionPool;
 import yqius.util.db.ConnectionPoolManager;
 import yqius.dataDeal.util.StrUtil;
 import yqius.util.db.dboperation.inter.SelectInterface;
-
+//import org.apache.tomcat.jdbc.pool.ConnectionPool;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,20 +57,22 @@ public class SelectImpl implements SelectInterface {
     @Override
     public void insertData(String sql) {
         ConnectionPool pool = ConnectionPoolManager.getPool("CMServer");//
-        PreparedStatement prs =null;
-        ResultSet rs = null;
+        PreparedStatement prs = null;
         Connection conn = null;
-        try{
-            conn = pool.getConnection();
+        try {
+            conn = ConnectionPool.getConnection();
             prs = conn.prepareStatement(sql);
             prs.executeUpdate();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            pool.closePreparedStatement(prs);
-            pool.closeResultSet(rs);
-            pool.returnConnection(conn);
+        } finally {
+            ConnectionPool.closePreparedStatement(prs);
+            ConnectionPool.returnConnection(conn);
         }
+    }
 
+    @Override
+    public void delete(String sql) {
+        this.insertData(sql);
     }
 }

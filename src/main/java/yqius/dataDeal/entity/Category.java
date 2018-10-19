@@ -53,4 +53,15 @@ public class Category {
 
     public Category() {
     }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "categoryid=" + categoryid +
+                ", categoryname='" + categoryname + '\'' +
+                ", levels=" + levels +
+                ", parents=" + parents +
+                ", shortname='" + shortname + '\'' +
+                '}';
+    }
 }

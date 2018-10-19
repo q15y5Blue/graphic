@@ -2,6 +2,9 @@ package yqius.dataDeal.general;
 
 import yqius.dataDeal.entity.Category;
 import yqius.dataDeal.util.StrUtil;
+import yqius.util.db.ConnectionPool;
+import yqius.util.db.ConnectionPoolManager;
+import yqius.util.db.dboperation.SelectImpl;
 import yqius.util.io.FileMethod;
 
 import java.util.regex.Matcher;
@@ -14,9 +17,10 @@ public class CategoryExecute {
         String[] arrStr = sb.toString().split("\n");
         String parr = "^\\d{1,}";
         Pattern pattern = Pattern.compile(parr);
+        ConnectionPool pool = ConnectionPoolManager.getPool("CMServer");//
         for(int i=0;i<arrStr.length;i++){
             String str = arrStr[i];
-            System.out.println(str);
+//            System.out.println(str);
             Matcher matcher = pattern.matcher(str);
             if(matcher.find()){
                 Category cate = new Category();
@@ -34,24 +38,42 @@ public class CategoryExecute {
                 }
                 cate.setCategoryid(cateId);
 
-                str = str.replace(matcher.group(0),"");
-//                String cateGoryName = cate.setCategoryname();
-//                if(cateGoryName.length()>20){
-//                    cate.setCategoryname();
-//                }
-//                cate.setCategoryname();
-
+                String cateGoryName = StrUtil.trimStr(str.replace(matcher.group(0),""));
+                if(cateGoryName.length()>20){
+                   cate.setCategoryname("其他");
+                }else {
+                    cate.setCategoryname(cateGoryName);
+                }
                 cate.setShortname("");
 //                System.out.println(cate);
+
+                this.insertCate(cate);
+                //cate Get
+                    System.out.println("成功插入了:"+i);
             }
 
         }
 
     }
 
+    public void insertCate(Category cate){
+        SelectImpl si = new SelectImpl();
+        String sql = String.format("insert into shp_category (categoryid,categoryname,levels,parents,shortname) values('%d','%s','%d','%d','%s')",
+                cate.getCategoryid(), cate.getCategoryname(),cate.getLevels(),cate.getParents(),cate.getShortname());
+        si.insertData(sql);
+        System.out.println("insert success");
+    }
+
+    public void delteData(){
+        SelectImpl si = new SelectImpl();
+        String sql = "delete from shp_category";
+        si.delete(sql);
+        System.out.println("delete success");
+    }
+
     public static void main(String[] args) {
         CategoryExecute ce = new CategoryExecute();
-        ce.execute();
-        System.out.println(22040104/100);
+//        ce.execute();
+        ce.delteData();
     }
 }
