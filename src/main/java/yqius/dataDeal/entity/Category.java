@@ -1,5 +1,7 @@
 package yqius.dataDeal.entity;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * 分类数据处理
  * shp_category表
@@ -24,7 +26,7 @@ public class Category {
     }
 
     public void setCategoryname(String categoryname) {
-        this.categoryname = categoryname;
+            this.categoryname = categoryname;
     }
 
     public Integer getLevels() {

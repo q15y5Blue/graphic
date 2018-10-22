@@ -5,6 +5,17 @@
   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
   metadata-complete="false"
   version="3.1">
-
-
+    <!--<servlet>-->
+        <!--<servlet-name>webInit</servlet-name>-->
+        <!--<servlet-class>-->
+            <!--yqius.core.StartMode-->
+        <!--</servlet-class>-->
+        <!--<load-on-startup>1</load-on-startup>-->
+    <!--</servlet>-->
+    <resource-ref>
+        <res-ref-name>jdbc/wf_tiy</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Shareable</res-sharing-scope>
+    </resource-ref>
 </web-app>

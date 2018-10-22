@@ -1,5 +1,6 @@
 package yqius.dataDeal.util;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,5 +23,14 @@ public class StrUtil {
             arrLi.add(s);
         }
         return arrLi;
+    }
+
+    public static String toGBK(String s){
+        try {
+            return new String(s.getBytes("GBK"), "GBK");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
